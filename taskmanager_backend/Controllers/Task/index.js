@@ -1,4 +1,3 @@
-// const mongoose = require("mongoose");
 const { ApiResponse } = require("../../Helpers/index");
 const User = require("../../Models/User/User");
 const Task = require("../../Models/Task/Task");
@@ -27,14 +26,6 @@ exports.addTask = async (req, res) => {
         user: req.user._id,
       });
       await task.save();
-      const notificationTitle = "Task Added By User";
-      const content = "A new task has been added By User";
-      sendNotificationToFollowers(
-        notificationTitle,
-        content,
-        user,
-        task._id
-      );
       res
         .status(200)
         .json(ApiResponse(task, "Task Created Successfully", true));
@@ -68,7 +59,7 @@ exports.addTask = async (req, res) => {
           },
         });
     }
-    // if from and to are provided then filter events between the dates
+
     if (from && to) {
       const utcFrom = moment.utc(from, "YYYY-MM-DD").startOf("day").toDate();
       const utcTo = moment.utc(to, "YYYY-MM-DD").endOf("day").toDate();
@@ -110,12 +101,9 @@ exports.addTask = async (req, res) => {
   exports.updateTask = async (req, res) => {
     let task = await Task.findById(req.params.id);
     try {
-    //   const task = await Task.findOne({ _id: req.params.id, user: req.user._id });
-      
       if (!task) {
         return res.status(404).json(ApiResponse({}, "Task Not Found", false));
       }
-      
       let updated = { };
      
       updated.title = req.body.title ? req.body.title : task.title
@@ -182,3 +170,17 @@ exports.updateTaskStatus = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// Get Task By Id Controller
+exports.getTaskById = async (req, res) => {
+    const task = await Task.findById(req.params.id);
+    try {
+      if (!task) {
+        return res.status(404).json(ApiResponse({}, "Task Not Found", false));
+      }
+      res.status(200).json(ApiResponse(task, "Success", true));
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(ApiResponse({}, error.message, false));
+    }
+  };

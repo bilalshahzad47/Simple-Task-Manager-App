@@ -26,15 +26,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["ACTIVE", "INACTIVE"],
-      default: "ACTIVE",
-    }
+    // status: {
+    //   type: String,
+    //   enum: ["ACTIVE", "INACTIVE"],
+    //   default: "ACTIVE",
+    // }
   },
   { timestamps: true }
 );

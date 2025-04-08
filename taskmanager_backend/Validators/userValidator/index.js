@@ -16,12 +16,6 @@ exports.signupValidator = [
     .withMessage("Mobile Number is Required")
     .isNumeric().withMessage('Mobile Number must be a Valid Number'),
   body("password").not().isEmpty().withMessage("Password is Required"),
-  body("isAdmin")
-    .not()
-    .isEmpty()
-    .withMessage("isAdmin is Required")
-    .isBoolean()
-    .withMessage("isAdmin must be a Boolean Value"),
   function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
